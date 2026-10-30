@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://navismaritime.com/sitemap-index.xml

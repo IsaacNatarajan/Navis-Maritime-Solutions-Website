@@ -1,29 +1,52 @@
 ---
-// BaseLayout: the shared frame for every page on the site.
-// Each page passes in its own title and description.
-import '../styles/global.css';
-
-interface Props {
-  title: string;
-  description?: string;
-}
-
-const {
-  title,
-  description = 'Marine services company based in the UAE.',
-} = Astro.props;
+// Shared page frame: <head>, header, menu, footer and the site script.
+import Footer from '../components/Footer.astro';
+const { title, description, nav = '', page = '', mainClass } = Astro.props;
+const siteName = 'Navis Maritime Solutions';
+const fullTitle = title ? `${title} | ${siteName}` : `${siteName} | Marine engineering & shipyard services, Dubai`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <slot />
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{fullTitle}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={fullTitle}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={new URL('/images/og-image.jpg', Astro.site)}>
+  <meta name="theme-color" content="#0b2f5e">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles/site.css">
+  <script is:inline>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<header class="hdr">
+  <div class="wrap row">
+    <a class="brand" href="/" aria-label="Navis Maritime Solutions, home">
+  <img class="mark" src="/images/logo-mark.png" alt="Navis Maritime Solutions logo">
+  <span class="names"><span class="ar" lang="ar">نافيس ماريتايم سولوشنز ش.ذ.م.م-منطقة حرة</span><span class="en">Navis Maritime Solutions LLC-FZ</span></span>
+</a>
+    <nav><a data-nav="home" href="/" class={nav === "home" ? "on" : undefined}>Home</a><a data-nav="about" href="/about/" class={nav === "about" ? "on" : undefined}>About us</a><a data-nav="services" href="/services/" class={nav === "services" ? "on" : undefined}>Services</a><a data-nav="partners" href="/partners/" class={nav === "partners" ? "on" : undefined}>Partners</a><a data-nav="contact" href="/contact/" class={nav === "contact" ? "on" : undefined}>Contact</a></nav>
+    <a class="quote plate" href="/contact/">Get a quote</a>
+    <button class="burger" aria-label="Open menu"></button>
+  </div>
+</header>
+<nav class="mnav" aria-label="Menu">
+  <button class="mnav-close" aria-label="Close menu">×</button>
+  <a data-nav="home" href="/" class={nav === "home" ? "on" : undefined}>Home</a><a data-nav="about" href="/about/" class={nav === "about" ? "on" : undefined}>About us</a><a data-nav="services" href="/services/" class={nav === "services" ? "on" : undefined}>Services</a><a data-nav="partners" href="/partners/" class={nav === "partners" ? "on" : undefined}>Partners</a><a data-nav="contact" href="/contact/" class={nav === "contact" ? "on" : undefined}>Contact</a>
+</nav>
+
+<main data-page={page} class={mainClass}>
+  <slot />
+  <Footer />
+</main>
+<script is:inline src="/js/site.js" defer></script>
+</body>
 </html>

@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Contact" description="Contact Navis Maritime Solutions, Meydan Grandstand, Dubai. Tell us about your vessel or project and our team will get back to you." nav="contact" page="contact">
+
+  <section class="hero page ph-contact">
+    <div class="hero-inner"><div class="wrap rise">
+      <span class="tag">Get in touch</span>
+      <h1>Let's talk about <em>your project.</em></h1>
+      <p class="sub">Tell us about your vessel or project, and our team will get back to you.</p>
+    </div></div>
+  </section>
+  <div class="body">
+    <section class="sec reveal">
+      <div class="wrap">
+        <div class="cards4">
+          <div class="ccard plate"><span class="cico"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></svg></span><div class="k">Office</div><div class="v">Meydan Grandstand, 6th Floor<br>Dubai, United Arab Emirates</div></div>
+          <div class="ccard plate"><span class="cico"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></span><div class="k">Email</div><div class="v"><a href="mailto:info@navismaritime.com">info@navismaritime.com</a></div></div>
+          <div class="ccard plate"><span class="cico"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.6l1.4 4.2-2 1.4a12 12 0 0 0 6.3 6.3l1.4-2 4.2 1.4v2.6a1.9 1.9 0 0 1-2.1 1.9A17 17 0 0 1 4.7 5.6a1.9 1.9 0 0 1 1.9-2.1z"/></svg></span><div class="k">Phone &amp; WhatsApp</div><div class="v"><a href="tel:+971549963113">+971 54 996 3113</a></div></div>
+          <div class="ccard plate"><span class="cico"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></span><div class="k">Office hours</div><div class="v">Monday to Friday, 9:00 to 18:00</div></div>
+        </div>
+        <div class="contact">
+          <form class="enquiry formbox plate" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="">
+            <input type="hidden" name="subject" value="New enquiry from navismaritime.com">
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <span class="eyebrow">Send an enquiry</span>
+            <h2>Tell us about your project</h2>
+            <p>Share a few details and our team will get back to you.</p>
+            <div class="fields">
+              <div class="field"><label for="c-name">Full name</label><input id="c-name" name="name" autocomplete="name"></div>
+              <div class="field"><label for="c-company">Company</label><input id="c-company" name="company" autocomplete="organization"></div>
+              <div class="field"><label for="c-email">Email</label><input id="c-email" type="email" name="email" autocomplete="email"></div>
+              <div class="field"><label for="c-phone">Phone</label><input id="c-phone" type="tel" name="phone" autocomplete="tel"></div>
+              <div class="field full"><label for="c-svc">Service of interest</label><select id="c-svc" name="service"><option value="">Select a service</option><option>Project Management Services</option><option>Shipyards Agent &amp; Representative</option><option>Spare Parts Supply &amp; Support</option><option>Engineering Consultancy in Shipbuilding</option><option>Global Product Representation</option><option>Ship Chartering Support</option><option>Marine &amp; Industry Welder and Welding Qualification Advisory</option><option>Fabrication Inspection Services (QA/QC)</option><option>Other</option></select></div>
+              <div class="field full"><label for="c-msg">Message</label><textarea id="c-msg" name="message"></textarea></div>
+            </div>
+            <button class="btn dark plate" type="submit">Send enquiry <span class="ar">→</span></button>
+            <p class="form-note" hidden>This is a preview, so nothing was sent. The form will be connected to your email before launch.</p>
+          </form>
+          <div class="infobox plate">
+            <span class="eyebrow">Navis Maritime Solutions</span>
+            <h3>Navis Maritime Solutions LLC-FZ</h3>
+            <p>Shipowners, ship operators and international shipyards: tell us what you need, and we'll come back with a clear plan.</p>
+            <div class="ar" lang="ar">نافيس ماريتايم سولوشنز ش.ذ.م.م-منطقة حرة</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+  </div>
+</BaseLayout>
