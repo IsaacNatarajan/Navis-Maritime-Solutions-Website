@@ -128,77 +128,9 @@
   window.addEventListener('resize', fitBrand);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBrand);
 
-  // Justified text without gaps and without splitting words.
-  // Browsers justify by stretching only the spaces, which leaves big gaps on
-  // some lines. Instead, each line is measured and filled exactly: a little
-  // extra goes into the spaces (capped so it never looks gappy), and any
-  // remainder is spread invisibly between the letters of that line.
-  const originals = new WeakMap();
-  function justify() {
-    document.querySelectorAll('[data-page]:not([hidden]) .body p, [data-page]:not([hidden]) .glass p').forEach(p => {
-      if (originals.has(p)) { p.textContent = originals.get(p); p.classList.remove('jt'); }
-      if (p.classList.contains('statement') || p.closest('.center, footer, .crumbs, .pn, .card, .svc-card, .facts, .ccard, .pcard, .ctabox, .legalbar, .sd-talk, .sh-cap, .br-text')) return;
-      if (p.children.length) return;                       // only plain-text paragraphs
-      const text = p.textContent.replace(/\s+/g, ' ').trim();
-      if (!text || p.clientWidth === 0) return;
-      const fs = parseFloat(getComputedStyle(p).fontSize) || 16;
-      if (p.clientWidth / (fs * 0.52) < 50) return;         // too narrow to justify nicely (phones stay left-aligned)
-      originals.set(p, p.textContent);
-      // Break the text into lines ourselves, only at spaces (never inside a
-      // word, and never at the hyphen of words like "dry-docking").
-      const cs = getComputedStyle(p);
-      const W = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      const ctx = (justify.c || (justify.c = document.createElement('canvas').getContext('2d')));
-      ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
-      // Balanced line breaking: choose break points so that the leftover space
-      // is spread as evenly as possible across all lines (no one line gets a
-      // big gap), similar to how print layout software does it.
-      const words = text.split(' '), n = words.length;
-      const ww = words.map(w => ctx.measureText(w).width), sp = ctx.measureText(' ').width;
-      const Wmax = W * 0.985, best = new Array(n + 1).fill(Infinity), from = new Array(n + 1).fill(0);
-      best[0] = 0;
-      for (let i = 0; i < n; i++) {
-        if (best[i] === Infinity) continue;
-        let width = -sp;
-        for (let j = i; j < n; j++) {
-          width += ww[j] + sp;
-          if (width > Wmax && j > i) break;
-          const slack = Wmax - width, last = j === n - 1;
-          const cost = best[i] + (last ? 0 : Math.pow(Math.max(slack, 0) / Math.max(j - i, 1), 2) * 10 + slack * slack / 50);
-          if (cost < best[j + 1]) { best[j + 1] = cost; from[j + 1] = i; }
-        }
-      }
-      const lines = [];
-      for (let j = n; j > 0; j = from[j]) lines.unshift(words.slice(from[j], j).join(' '));
-      if (lines.length < 2) { p.textContent = originals.get(p); originals.delete(p); return; }
-      const maxWord = fs * 0.22, maxLetter = fs * 0.07;
-      let tooLoose = false;
-      p.textContent = '';
-      lines.forEach((line, k) => {
-        const span = document.createElement('span');
-        span.className = 'jl'; span.textContent = line;
-        span.style.cssText = 'display:block;white-space:nowrap;width:max-content';
-        p.appendChild(span);
-        const natural = span.getBoundingClientRect().width;
-        span.style.width = '';
-        if (k === lines.length - 1) return;                  // last line stays natural
-        const extra = W - natural;
-        if (extra <= 0) return;
-        const spaces = (line.match(/ /g) || []).length, gaps = Math.max(line.length - 1, 1);
-        let ws = spaces ? Math.min(extra / spaces, maxWord) : 0;
-        let ls = (extra - ws * spaces) / gaps;
-        if (ls > maxLetter && spaces) { ls = maxLetter; ws = (extra - ls * gaps) / spaces; }   // prefer word space over wide letters
-        if (ws > fs * 0.42) tooLoose = true;
-        span.style.wordSpacing = ws.toFixed(3) + 'px';
-        span.style.letterSpacing = ls.toFixed(3) + 'px';
-      });
-      if (tooLoose) { p.textContent = originals.get(p); originals.delete(p); return; }   // would look gappy: keep it left-aligned
-      p.classList.add('jt');
-    });
-  }
-  let jTimer;
-  window.addEventListener('resize', () => { clearTimeout(jTimer); jTimer = setTimeout(justify, 120); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => justify());
+  // Paragraphs use normal left-aligned text with natural, even spacing
+  // (no stretching of words or letters).
+  function justify() {}
 
   update();
   fitBrand();

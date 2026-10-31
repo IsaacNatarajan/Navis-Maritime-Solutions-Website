@@ -1,8 +1,8 @@
 /* Navis Maritime Solutions: site styles */
-@font-face{font-family:'Manrope';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/manrope-latin-400-normal.woff2) format('woff2');}
-@font-face{font-family:'Manrope';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/manrope-latin-500-normal.woff2) format('woff2');}
-@font-face{font-family:'Manrope';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/manrope-latin-600-normal.woff2) format('woff2');}
-@font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url(/fonts/manrope-latin-700-normal.woff2) format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/inter-latin-400-normal.woff2) format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/inter-latin-500-normal.woff2) format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/inter-latin-600-normal.woff2) format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:700;font-display:swap;src:url(/fonts/inter-latin-700-normal.woff2) format('woff2');}
 @font-face{font-family:'Noto Sans Arabic';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/noto-sans-arabic-arabic-400-normal.woff2) format('woff2');}
 @font-face{font-family:'Montserrat';font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/montserrat-latin-600-normal.woff2) format('woff2');}
 
@@ -13,7 +13,7 @@
 :root {
   --bg: #ffffff; --surface: #f3f5f8; --ink: #0b2f5e; --text: #1b2738; --muted: #556274; --line: #e1e6ee;
   --gold: #c29a52; --gold-text: #8a6727; --gold-light: #e3c58c; --gold-soft: #f7f0e2;
-  --f: 'Manrope', system-ui, sans-serif; --f-ar: 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  --f: 'Inter', system-ui, sans-serif; --f-ar: 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
   --shade: linear-gradient(to top right, rgba(5,22,46,.66) 0%, rgba(5,22,46,.3) 42%, rgba(5,22,46,0) 70%);
 }
 * { box-sizing: border-box; margin: 0; }
