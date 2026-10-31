@@ -1203,6 +1203,11 @@ footer li.ci .ic { color: #e8c46a; margin-top: 2px; }
 [data-page="services"] .svc-grid > .svc-cta h3 { margin: 10px 0 0 !important; max-width: 640px; }
 [data-page="services"] .svc-grid > .svc-cta > div { flex: 1; min-width: 260px; }
 
+/* Keep the site's own colours when a phone or browser is set to dark mode
+   (stops automatic "dark theme" from darkening the gold text). */
+:root { color-scheme: light only; }
+html, body { background-color: #ffffff; }
+
 /* contact form extras */
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
 .form-note.err { color: #b42318 !important; }
