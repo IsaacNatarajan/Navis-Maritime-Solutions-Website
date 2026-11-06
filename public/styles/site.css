@@ -1208,6 +1208,35 @@ footer li.ci .ic { color: #e8c46a; margin-top: 2px; }
 :root { color-scheme: light only; }
 html, body { background-color: #ffffff; }
 
+/* ================= Justified text in key places (laptops/desktops only) =================
+   The site script picks even line breaks; each line is then stretched using the
+   gaps between words only. Phones stay left-aligned. */
+p.jw { text-align: left !important; letter-spacing: normal !important; word-spacing: normal !important; hyphens: none !important; }
+p.jw .jl { display: block; white-space: nowrap; text-align: left; }
+
+/* text widths tuned so the justified paragraphs get even word gaps */
+@media (min-width: 1001px) {
+  [data-page="home"] .split:not(.intro-split) > div:first-child { max-width: 556px; }
+  [data-page="about"] .intro-split > div:first-child { max-width: 582px; }
+  [data-page="partners"] .intro-split > div:first-child { max-width: 536px; }
+}
+
+.sh-b { font-family: var(--f); }
+
+/* Nov 5: hero video = Option C, shown like the earlier homepage video: a window on the right that fades into navy
+   behind the text (not mirrored). The hero is shorter than the screen so there is no big empty band before "Who we are". */
+@media (min-width: 1001px) {
+  .hero:not(.page) { height: max(600px, min(100vh, 680px)) !important; min-height: 0 !important; --shade: linear-gradient(to right, rgba(5,22,46,.55) 0%, rgba(5,22,46,.25) 40%, rgba(5,22,46,0) 60%) !important; }
+  .hero:not(.page) .hero-photo { position: absolute !important; inset: 0 !important; height: auto !important; }
+  .hero:not(.page) .hero-photo .mf { transform: none !important; left: auto !important; right: 0 !important; top: 0 !important; bottom: 0 !important; height: auto !important;
+    width: min(100%, calc(max(600px, min(100vh, 680px)) * 1.6)) !important;
+    -webkit-mask-image: linear-gradient(to left, #000 62%, transparent 100%) !important; mask-image: linear-gradient(to left, #000 62%, transparent 100%) !important; }
+  .hero:not(.page) .hero-photo video { height: 100% !important; object-position: 0% 50% !important; }
+  [data-page=home] .hero:not(.page) + * .sec:first-child, [data-page=home] > .sec:first-of-type { padding-top: 64px !important; }
+}
+@media (min-width: 1001px) and (max-width: 1180px) { .hero:not(.page) .glass { max-width: 420px !important; } }
+@media (max-width: 1000px) { .hero:not(.page) .hero-photo .mf { transform: none !important; } .hero:not(.page) .hero-photo video { object-position: 50% 50% !important; } }
+
 /* contact form extras */
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
 .form-note.err { color: #b42318 !important; }

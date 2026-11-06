@@ -128,9 +128,77 @@
   window.addEventListener('resize', fitBrand);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBrand);
 
-  // Paragraphs use normal left-aligned text with natural, even spacing
-  // (no stretching of words or letters).
-  function justify() {}
+  // Justified text in key paragraphs (laptops/desktops only).
+  // Line breaks are chosen so the spare space is shared evenly between all
+  // lines, and only the gaps between words grow (letters are never spaced
+  // out and words are never split). If a paragraph would need wide gaps,
+  // it simply stays left-aligned.
+  const JSEL = '[data-page="home"] .split:not(.intro-split) > div > p, .intro-split .intro-body, .svc-detail .sd-block p';
+  const originals = new WeakMap();
+  let measure;
+  function justify() {
+    const wide = window.innerWidth > 1000;
+    document.querySelectorAll(JSEL).forEach(p => {
+      if (originals.has(p)) { p.textContent = originals.get(p); originals.delete(p); }
+      p.classList.remove('jw');
+      if (!wide || p.children.length) return;
+      p.classList.add('jw');                         // normal letter/word spacing while measuring
+      const text = p.textContent.replace(/\s+/g, ' ').trim();
+      const cs = getComputedStyle(p);
+      const W = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (!text || W <= 0) { p.classList.remove('jw'); return; }
+      const fs = parseFloat(cs.fontSize) || 16;
+      const ctx = measure || (measure = document.createElement('canvas').getContext('2d'));
+      ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+      const words = text.split(' '), n = words.length;
+      const ww = words.map(w => ctx.measureText(w).width), sp = ctx.measureText(' ').width;
+      const LCAP = fs * 0.018;                       // tiny letter spacing cap (about 0.3 px, not visible)
+      const Wmax = W - 1, best = new Array(n + 1).fill(Infinity), from = new Array(n + 1).fill(0);
+      const need = (a, b) => {                       // extra space per word gap for words a..b-1 on one line
+        let w = -sp, chars = -1; for (let k = a; k < b; k++) { w += ww[k] + sp; chars += words[k].length + 1; }
+        const slack = Math.max(Wmax - w, 0), gaps = Math.max(b - a - 1, 1);
+        return { w, slack, chars, gaps, per: Math.max(slack - LCAP * chars, 0) / gaps };
+      };
+      best[0] = 0;
+      for (let i = 0; i < n; i++) {
+        if (best[i] === Infinity) continue;
+        for (let j = i + 1; j <= n; j++) {
+          const L = need(i, j);
+          if (L.w > Wmax && j > i + 1) break;
+          const cost = best[i] + (j === n ? 0 : Math.pow(L.per / fs * 10, 3));
+          if (cost < best[j]) { best[j] = cost; from[j] = i; }
+        }
+      }
+      const lines = [];
+      for (let j = n; j > 0; j = from[j]) lines.unshift([from[j], j]);
+      if (lines.length < 2) { p.classList.remove('jw'); return; }
+      const worst = Math.max(...lines.slice(0, -1).map(([a, b]) => need(a, b).per));
+      if (worst > fs * 0.3) { p.classList.remove('jw'); return; }   // would look gappy: keep left-aligned
+      originals.set(p, p.textContent);
+      p.textContent = '';
+      lines.forEach(([a, b], k) => {
+        const span = document.createElement('span');
+        span.className = 'jl';
+        span.textContent = words.slice(a, b).join(' ');
+        span.style.width = 'max-content';
+        p.appendChild(span);
+        if (k === lines.length - 1) { span.style.width = ''; return; }
+        const natural = span.getBoundingClientRect().width;
+        span.style.width = '';
+        const slack = W - natural - 0.5;
+        if (slack <= 0) return;
+        const chars = span.textContent.length - 1, gaps = Math.max(b - a - 1, 1);
+        const ls = Math.min(slack / Math.max(chars, 1), LCAP);
+        const ws = (slack - ls * chars) / gaps;
+        span.style.letterSpacing = ls.toFixed(3) + 'px';
+        span.style.wordSpacing = ws.toFixed(3) + 'px';
+      });
+      p.classList.add('jw');
+    });
+  }
+  let jTimer;
+  window.addEventListener('resize', () => { clearTimeout(jTimer); jTimer = setTimeout(justify, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => justify());
 
   update();
   fitBrand();
