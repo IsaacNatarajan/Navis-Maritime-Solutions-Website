@@ -1165,7 +1165,7 @@ footer a[href^="mailto"], footer a[href^="tel"], .ccard .v a { color: inherit; }
   background: repeating-linear-gradient(90deg, #f4efe4 0 1px, #ddd5c4 1px 2px); }
 .book-3d::after { content: ''; position: absolute; left: 6%; right: -6%; bottom: -16px; height: 18px; background: radial-gradient(ellipse at center, rgba(5,22,46,.35), transparent 70%); transform: translateZ(-30px); filter: blur(4px); }
 .book-cover { position: absolute; inset: 0; overflow: hidden; border-radius: 2px 6px 6px 2px; background: #0b2f5e; box-shadow: 14px 18px 34px -14px rgba(5,22,46,.55), inset 0 0 0 1px rgba(255,255,255,.06); display: flex; flex-direction: column; }
-.bk-photo { height: 50%; background: url("/images/vm-ship.jpg") 62% 55% / cover no-repeat; position: relative; }
+.bk-photo { height: 50%; background: url("/images/brochure-cover.jpg") 47% 46% / auto 150% no-repeat; position: relative; }
 .bk-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,47,94,0) 40%, #0b2f5e 100%); }
 .bk-body { flex: 1; padding: 0 16px 16px 20px; display: flex; flex-direction: column; color: #fff; position: relative; margin-top: -22px; }
 .bk-body img { width: 34px; height: auto; margin-bottom: 10px; }
@@ -1236,6 +1236,49 @@ p.jw .jl { display: block; white-space: nowrap; text-align: left; }
 }
 @media (min-width: 1001px) and (max-width: 1180px) { .hero:not(.page) .glass { max-width: 420px !important; } }
 @media (max-width: 1000px) { .hero:not(.page) .hero-photo .mf { transform: none !important; } .hero:not(.page) .hero-photo video { object-position: 50% 50% !important; } }
+
+/* ================= Nov 7 changes ================= */
+/* 1. Gold subtitles in the page headers (About us, Our core services, Service 1 of 8, ...) shiny like the other gold labels */
+.hero.page .tag, .hero.page .tag * {
+  background-image: var(--metal-dark) !important; background-size: 300% 100% !important;
+  -webkit-background-clip: text !important; background-clip: text !important;
+  -webkit-text-fill-color: transparent !important; color: #e8c46a !important;
+  animation: sheen 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) { .hero.page .tag { animation: none; } }
+
+/* 2. Services drop-down: hover "Services" in the top menu to see all eight */
+.hdr nav .dd { position: relative; display: flex; align-items: center; }
+.hdr nav .dd > a { display: inline-flex; align-items: center; }
+.hdr .chev { display: inline-block; width: 7px; height: 7px; margin-left: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s ease; }
+.hdr .dd:hover .chev, .hdr .dd:focus-within .chev { transform: translateY(1px) rotate(225deg); }
+.hdr .dd::after { content: ''; position: absolute; left: -24px; right: -24px; top: 100%; height: 30px; }
+.hdr .dd-menu { position: absolute; top: calc(100% + 26px); left: 50%; width: 400px; padding: 10px; background: #fff;
+  border-top: 3px solid #d9a634; box-shadow: 0 26px 50px -22px rgba(11,47,94,.45), 0 0 0 1px rgba(11,47,94,.08);
+  opacity: 0; visibility: hidden; transform: translate(-50%, 8px); transition: opacity .2s ease, transform .2s ease, visibility .2s; z-index: 40; }
+.hdr .dd:hover .dd-menu, .hdr .dd:focus-within .dd-menu { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.hdr .dd-menu a { display: flex; gap: 14px; align-items: baseline; padding: 10px 12px; font-size: 14.5px; font-weight: 500; line-height: 1.35; color: var(--ink); }
+.hdr .dd-menu a:hover { background: #f2f6fb; color: #a5711a; }
+.hdr .dd-menu .n { min-width: 12px; font-weight: 700; color: #a5711a; }
+.hdr .dd-menu .dd-all { justify-content: space-between; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--line); font-weight: 700; }
+.hdr .dd-menu .dd-all .ar { color: #a5711a; }
+
+/* 3. Service pages: previous / all / next line first, then a compact "talk to our team" strip */
+.sd-pn { margin-top: 48px !important; }
+.sd-talk { --c: 18px; max-width: none !important; margin: 36px 0 0 !important; padding: 26px 34px !important; text-align: left !important;
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "k btn" "h btn" "p btn"; column-gap: 32px; align-items: center; }
+.sd-talk::before { left: 0 !important; top: 0 !important; bottom: 0; width: 4px !important; height: auto !important; margin-left: 0 !important; }
+.sd-talk .eyebrow { grid-area: k; justify-content: flex-start !important; font-size: 15px !important; }
+.sd-talk h3 { grid-area: h; font-size: 21px !important; margin: 6px 0 4px !important; }
+.sd-talk p { grid-area: p; margin: 0 !important; max-width: 560px !important; text-align: left !important; text-align-last: auto !important; font-size: 15px; }
+.sd-talk .btn { grid-area: btn; white-space: nowrap; }
+@media (max-width: 760px) {
+  .sd-talk { grid-template-columns: 1fr; grid-template-areas: "k" "h" "p" "btn"; padding: 24px 22px !important; }
+  .sd-talk .btn { justify-self: start; margin-top: 16px; }
+}
+
+/* 6. Contact info box: no Arabic line; compact box at the top beside the form (as before) */
+.infobox { align-self: start !important; }
 
 /* contact form extras */
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
