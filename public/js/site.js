@@ -52,12 +52,18 @@
   (function () {
     const v = document.querySelector('.hero-video');
     if (!v) return;
-    const small = window.matchMedia && window.matchMedia('(max-width: 1000px)').matches;
+    const mq = window.matchMedia ? window.matchMedia('(max-width: 1000px)') : null;
     const btn = document.querySelector('.vid-toggle');
     let userPaused = false;
     function tryPlay() { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
     v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
-    v.src = (small && v.dataset.srcM) || v.dataset.src;
+    // pick the cut for the current width, and switch again if the window is resized or zoomed
+    function pick() {
+      const want = (mq && mq.matches && v.dataset.srcM) || v.dataset.src;
+      if (v.getAttribute('src') !== want) { v.src = want; if (!userPaused) tryPlay(); }
+    }
+    pick();
+    if (mq) { if (mq.addEventListener) mq.addEventListener('change', pick); else if (mq.addListener) mq.addListener(pick); }
     v.addEventListener('canplay', () => { if (!userPaused) tryPlay(); });
     tryPlay();
     if (btn) {

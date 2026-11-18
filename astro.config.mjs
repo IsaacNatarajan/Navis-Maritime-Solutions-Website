@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://navismaritime.com',
+  site: 'https://navismaritime.ae',
   trailingSlash: 'always',
   integrations: [sitemap()],
 });

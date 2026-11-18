@@ -1280,6 +1280,27 @@ p.jw .jl { display: block; white-space: nowrap; text-align: left; }
 /* 6. Contact info box: no Arabic line; compact box at the top beside the form (as before) */
 .infobox { align-self: start !important; }
 
+/* ================= Nov 18: vision & mission white cards, gold headings, navy text ================= */
+.vm-ship .vm-card { background: #ffffff !important; box-shadow: 0 24px 50px -28px rgba(0,0,0,.55) !important; }
+.vm-ship .vm-card h3 { background-image: linear-gradient(100deg, #7a4d0c 0%, #a5711a 20%, #cf9c3c 36%, #a5711a 52%, #835610 68%, #b5832a 84%, #7a4d0c 100%) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important; }
+.vm-ship .vm-card p, .vm-ship .vm-card p .jl { color: #0b2f5e !important; -webkit-text-fill-color: #0b2f5e !important; }
+
+/* Nov 18: home commitment cards link to the full text on About Us */
+.pillars .pillar { display: flex; flex-direction: column; }
+.pillars .pillar h3 { flex: 1 0 auto; }
+.pl-read { align-self: flex-start; margin-top: 18px; font-size: 14px; }
+.pl-read .ar { transition: transform .2s ease; }
+.pl-read:hover .ar { transform: translateX(4px); }
+[id^="commitment-"] { scroll-margin-top: 120px; }
+
+/* Nov 18: home services heading, "One partner." in shiny gold */
+.sh-head h2 em { font-style: normal; background-image: var(--metal) !important; background-size: 300% 100% !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; color: #9a6a18 !important; animation: sheen 9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .sh-head h2 em { animation: none; } }
+
+/* Nov 18: copyright bar, "Trusted to Deliver." in shiny gold */
+footer .legalbar .lb-tag em { font-style: normal; background-image: var(--metal) !important; background-size: 300% 100% !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; color: #9a6a18 !important; animation: sheen 9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { footer .legalbar .lb-tag em { animation: none; } }
+
 /* contact form extras */
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
 .form-note.err { color: #b42318 !important; }
