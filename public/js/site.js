@@ -24,20 +24,24 @@
   // Mobile menu
   document.querySelectorAll('.burger, .mnav-close').forEach(b => b.addEventListener('click', () => document.body.classList.toggle('menu-open')));
 
-  // Contact form: sent through Web3Forms (the access key is added at launch)
+  // Contact form: sent to our own server function (/api/contact), which checks it and passes it on.
+  // No secret key is in the page.
   document.querySelectorAll('form.enquiry').forEach(f => f.addEventListener('submit', async e => {
     e.preventDefault();
     const note = f.querySelector('.form-note');
     const say = (msg, ok) => { if (note) { note.hidden = false; note.textContent = msg; note.classList.toggle('err', !ok); } };
-    const key = (f.querySelector('[name="access_key"]') || {}).value;
-    if (!key) { say('The form is not connected yet. Please email or call us directly.', false); return; }
+    const val = n => ((f.querySelector('[name="' + n + '"]') || {}).value || '').trim();
+    if (!val('name') || !val('email') || !val('message')) { say('Please fill in your name, email and message.', false); return; }
+    if (!val('cf-turnstile-response')) { say('Please complete the security check above the button.', false); return; }
     const btn = f.querySelector('button[type="submit"]'); if (btn) btn.disabled = true;
+    say('Sending...', true);
     try {
       const r = await fetch(f.action, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(f) });
       const j = await r.json().catch(() => ({}));
-      if (r.ok && j.success !== false) { f.reset(); say('Thank you. Your enquiry has been sent and our team will get back to you shortly.', true); }
-      else say('Sorry, something went wrong. Please email or call us directly.', false);
+      if (r.ok && j.success) { f.reset(); say('Thank you. Your enquiry has been sent and our team will get back to you shortly.', true); }
+      else say(j.message || 'Sorry, something went wrong. Please email or call us directly.', false);
     } catch (err) { say('Sorry, the message could not be sent. Please check your connection or email us directly.', false); }
+    if (window.turnstile) try { window.turnstile.reset(); } catch (x) {}
     if (btn) btn.disabled = false;
   }));
 
